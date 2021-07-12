@@ -1,0 +1,66 @@
+﻿@inherits LayoutComponentBase
+
+<AuthorizeView>
+    <Authorized>
+        <div class="page">
+            <div class="main">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item px-3 m-1">
+                                <NavLink class="navbar-brand nav-link" href="dashboard">
+                                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Cognito Dashboard
+                                </NavLink>
+                            </li>
+                        </ul>
+                        <div class="collapse navbar-collapse" id="topNavBar">
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item px-3 m-1">
+                                    <NavLink class="nav-link" href="users">
+                                        <i class="bi bi-person-fill me-1"></i> Users
+                                    </NavLink>
+                                </li>
+                                <li class="nav-item px-3 m-1">
+                                    <NavLink class="nav-link" href="groups">
+                                        <i class="bi bi-people-fill me-1"></i> Groups
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </div>
+                        <LoginDisplay />
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </nav>
+                <div class="mt-2 p-3">
+                    @Body
+                </div>
+            </div>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <div class="page">
+            <div class="main">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item px-3 m-1">
+                                <NavLink class="navbar-brand nav-link" href="dashboard">
+                                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> Cognito Dashboard
+                                </NavLink>
+                            </li>
+                        </ul>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </nav>
+                <div class="mt-2 p-3">
+                    @Body
+                </div>
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

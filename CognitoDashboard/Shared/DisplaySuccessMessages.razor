@@ -1,0 +1,20 @@
+@if (Messages != null && Messages.Any())
+{
+    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+        <ul class="list-unstyled mb-0">
+            @foreach (var message in Messages)
+            {
+                <li>@message</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="OnClear"></button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<string> Messages { get; set; }
+
+    [Parameter]
+    public EventCallback OnClear { get; set; }
+}

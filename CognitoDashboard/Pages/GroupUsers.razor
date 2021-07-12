@@ -1,0 +1,115 @@
+﻿@page "/groups/{GroupName}/users"
+
+@using CognitoDashboard.Shared;
+
+<nav>
+    <ol class="breadcrumb border border-0">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/groups">Groups</a></li>
+        <li class="breadcrumb-item"><a href="/groups/@GroupName">@GroupName</a></li>
+        <li class="breadcrumb-item active">Users</li>
+    </ol>
+</nav>
+
+<div class="d-flex pb-3 justify-content-start">
+    <a type="button" class="btn btn-primary me-3" href="/groups/@GroupName/users/add"><i class="bi bi-person-plus me-2"></i>Add Users to @GroupName</a>
+    <a type="button" class="btn btn-danger" @onclick="RemoveUsers"><i class="bi bi-person-dash me-2"></i>Remove users from @GroupName</a>
+</div>
+
+@if (_errorMessages?.Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading"><i class="bi bi-exclamation-lg me-2" />Errors</h4>
+        @foreach (var errorMessage in _errorMessages)
+        {
+            <p>@errorMessage</p>
+        }
+    </div>
+}
+
+@if (_successMessages?.Count > 0)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading pb-2"><i class="bi bi-check-circle-fill me-2"></i>Success</h4>
+        @foreach (var successMessage in _successMessages)
+        {
+            <p>@successMessage</p>
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="alert" @onclick="ClearSuccessMessages"></button>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(_isProcessingMessage))
+{
+    <Processing Message="@_isProcessingMessage" />
+}
+
+@if (_users == null)
+{
+    <Loading />
+}
+else
+{
+    <table class="table">
+        @if (!_users.Any())
+        {
+            <caption>
+                No Users found in @GroupName
+            </caption>
+        }
+        <thead>
+            <tr>
+                <th role="button" @onclick="OnGroupSelect">
+                    <input class="form-check-input" type="checkbox" @bind="GroupSelect" />
+                </th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                <th>Modified Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in _users)
+            {
+                <tr role="button" @onclick="() => UserSelected(user)">
+                    <td>
+                        <input class="form-check-input" type="checkbox" @bind="user.Selected" />
+                    </td>
+                    <td><a class="link-primary" href="/users/@user.UserType.Username">@user.UserType.Username</a></td>
+                    <td>@user.UserType.Attributes.FirstOrDefault(a => a.Name == "email")?.Value</td>
+                    <td>@user.UserType.Attributes.FirstOrDefault(a => a.Name == "phone_number")?.Value</td>
+                    <td>@user.UserType.UserStatus</td>
+                    <td>@user.UserType.UserCreateDate</td>
+                    <td>@user.UserType.UserLastModifiedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="d-flex justify-content-between">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled"><a class="page-link border-end-0" href="#">Page Size</a></li>
+                <li class="page-item">
+                    <select class="form-select rounded-0 rounded-end" value="@_pageLimit" @onchange="OnChangePageLimit">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+        @if (_response?.NextToken != null)
+        {
+            <nav>
+                <a type="button" class="btn btn-secondary" @onclick="LoadUsers"><i class="bi bi-arrow-down me-2"></i>Load More Groups</a>
+            </nav>
+        }
+    </div>
+}

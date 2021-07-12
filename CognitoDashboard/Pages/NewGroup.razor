@@ -1,0 +1,41 @@
+﻿@page "/groups/create"
+
+<nav>
+    <ol class="breadcrumb border border-0">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/Groups">Groups</a></li>
+        <li class="breadcrumb-item active">New Group</li>
+    </ol>
+</nav>
+
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="alert alert-danger" role="alert">
+        @_error
+    </div>
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded p-3">
+    <form class="row g-3" novalidate>
+        <div class="mb-3">
+            <label for="GroupName" class="form-label">Name (Required)</label>
+            <input class="form-control" id="GroupName" placeholder="Group Name" @bind="_request.GroupName">
+        </div>
+        <div class="mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <input class="form-control" id="Description" placeholder="Description" @bind="_request.Description">
+        </div>
+        <div class="mb-3">
+            <label for="RoleArn" class="form-label">Role Arn</label>
+            <input class="form-control" id="RoleArn" placeholder="Role Arn" @bind="_request.RoleArn">
+        </div>
+        <div class="mb-3">
+            <label for="Precedence" class="form-label">Precedence</label>
+            <input class="form-control" id="Precedence" placeholder="Precedence" @bind="_request.Precedence">
+        </div>
+        <div class="col-12">
+            <button class="btn btn-outline-danger me-2" type="button" @onclick="Cancel"><i class="bi bi-x-lg me-2"></i>Cancel</button>
+            <button class="btn btn-primary" type="button" @onclick="CreateGroup"><i class="bi bi-check-lg me-2"></i>Create Group</button>
+        </div>
+    </form>
+</div>

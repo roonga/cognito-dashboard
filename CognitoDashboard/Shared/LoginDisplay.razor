@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager _navigation
+
+<AuthorizeView>
+    <Authorized>
+        <a class="btn btn-sm btn-primary" type="button" href="/logout">
+            Sign Out <i class="bi bi-box-arrow-right ms-1"></i>
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <p class="lead text-muted">please sign in to continue...</p>
+        <button class="btn btn-sm btn-primary" type="button" @onclick="BeginSignIn">
+            Sign In <i class="bi bi-box-arrow-in-right ms-1"></i>
+        </button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void BeginSignIn(MouseEventArgs args)
+    {
+        _navigation.NavigateTo("dashboard");
+    }
+}

@@ -1,0 +1,65 @@
+﻿@page "/users/create"
+
+<nav>
+    <ol class="breadcrumb border border-0">
+        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="/users">Users</a></li>
+        <li class="breadcrumb-item active">New User</li>
+    </ol>
+</nav>
+
+@if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="alert alert-danger" role="alert">
+        @_error
+    </div>
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded p-3">
+    <form class="row g-3" novalidate>
+        <div class="mb-3">
+            <label for="userName" class="form-label">Username (Required)</label>
+            <input class="form-control" id="userName" placeholder="Username" @bind="_request.Username">
+        </div>
+        <div class="mb-3">
+            <label for="temporaryPassword" class="form-label">Temporary Password</label>
+            <input type="password" class="form-control" id="temporaryPassword" placeholder="Temporary Password" @bind="_request.TemporaryPassword">
+        </div>
+        <div class="mb-0">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input class="form-control" id="phoneNumber" placeholder="Phone Number" @bind="Phone">
+        </div>
+        <div class="mb-0 ms-3 form-check">
+            <input class="form-check-input" type="checkbox" value="" id="sendSMSInvitation">
+            <label class="form-check-label ms-1" for="sendSMSInvitation" @bind="SendInvitationBySms">
+                Send an invitation by SMS
+            </label>
+        </div>
+        <div class="mb-3 ms-3 form-check">
+            <input class="form-check-input" type="checkbox" id="markPhoneAsVerified" @bind="MarkPhoneAsVerified">
+            <label class="form-check-label ms-1" for="markPhoneAsVerified">
+                Mark Phone as Verified
+            </label>
+        </div>
+        <div class="mb-0">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="name@example.com" @bind="Email">
+        </div>
+        <div class="mb-0 ms-3 form-check">
+            <input class="form-check-input" type="checkbox" value="" id="sendEmailInvitation">
+            <label class="form-check-label ms-1" for="sendEmailInvitation" @bind="SendInvitationByEmail">
+                Send an invitation by Email
+            </label>
+        </div>
+        <div class="mb-3 ms-3 form-check">
+            <input class="form-check-input" type="checkbox" value="" id="markEmailAsVerified" @bind="EmailVerified">
+            <label class="form-check-label ms-1" for="markEmailAsVerified">
+                Mark Email as Verified
+            </label>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-outline-danger me-2" type="button" @onclick="Cancel"><i class="bi bi-x-lg me-2"></i>Cancel</button>
+            <button class="btn btn-primary" type="button" @onclick="CreateUser"><i class="bi bi-check-lg me-2"></i>Create User</button>
+        </div>
+    </form>
+</div>
