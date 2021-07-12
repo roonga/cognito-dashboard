@@ -54,7 +54,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: 258032939606.dkr.ecr.ap-southeast-2.amazonaws.com/cognito-dashboard
+        ECR_REPOSITORY: cognito-dashboard
         IMAGE_TAG: ${{ github.sha }}
       run: |
         # Build a docker container and
