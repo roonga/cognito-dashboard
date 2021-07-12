@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["CognitoDashboard/CognitoDashboard.csproj", "CognitoDashboard/"]
+COPY ["CognitoDashboard.IdentityManager/CognitoDashboard.IdentityManager.csproj", "CognitoDashboard.IdentityManager/"]
 RUN dotnet restore "CognitoDashboard/CognitoDashboard.csproj"
 COPY . .
 WORKDIR "/src/CognitoDashboard"
