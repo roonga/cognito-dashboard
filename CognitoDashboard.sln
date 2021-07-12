@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitoDashboard", "Cognito
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitoDashboard.IdentityManager", "CognitoDashboard.IdentityManager\CognitoDashboard.IdentityManager.csproj", "{5DB423F5-9ABA-43A4-A38A-AEB3CB5CAF41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitoDashboard.Tests", "CognitoDashboard.Tests\CognitoDashboard.Tests.csproj", "{C35D43F1-CE43-4DD3-9A9E-139EA628886A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5DB423F5-9ABA-43A4-A38A-AEB3CB5CAF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB423F5-9ABA-43A4-A38A-AEB3CB5CAF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB423F5-9ABA-43A4-A38A-AEB3CB5CAF41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C35D43F1-CE43-4DD3-9A9E-139EA628886A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35D43F1-CE43-4DD3-9A9E-139EA628886A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35D43F1-CE43-4DD3-9A9E-139EA628886A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35D43F1-CE43-4DD3-9A9E-139EA628886A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
