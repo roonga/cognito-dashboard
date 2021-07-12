@@ -1,0 +1,1 @@
+aws ecr create-repository --repository-name cognito-dashboard --region ap-southeast-2
