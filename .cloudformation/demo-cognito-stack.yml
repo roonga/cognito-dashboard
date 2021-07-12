@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sample Cognito Stack for the dashboard
+
+Parameters:
+  Environment:
+    Type: 'String'
+    Default: 'demo'
+
+Resources:
+  DashboardUserPool:
+    Type: 'AWS::Cognito::UserPool'
+    DeletionPolicy: Retain
+    Properties:
+      UserPoolName: !Sub ${Environment}-dashboard-userpool
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+      AutoVerifiedAttributes:
+        - email
+      Schema:
+        - AttributeDataType: Boolean
+          Mutable: true
+          Name: Terms
+      UsernameAttributes:
+        - email
+      UsernameConfiguration:
+        CaseSensitive: false
+
+  DashboardClient:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: dashboard-client
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+      CallbackURLs:
+        - 'https://localhost:5001/signin-oidc'
+      LogoutURLs:
+        - 'https://localhost:5001'
+      ExplicitAuthFlows:
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH
+      GenerateSecret: true
+      UserPoolId: !Ref DashboardUserPool
+
+  UserPoolDomain: 
+    Type: AWS::Cognito::UserPoolDomain 
+    Properties:
+      UserPoolId: !Ref DashboardUserPool
+      Domain: !Sub ${Environment}-dashboard-login
+
+  DashboardUserPoolGroupDataPortal:
+    Type: 'AWS::Cognito::UserPoolGroup'
+    Properties:
+      GroupName: dashboard-administrators
+      UserPoolId: !Ref DashboardUserPool
+
+Outputs:
+  UserPoolId:
+    Value: !Ref DashboardUserPool
+    Export:
+      Name: "cognito::dashboard::userpool::id"
+  ClientId:
+    Value: !Ref DashboardClient
+    Export:
+      Name: "cognito::dashboard::client::id"      

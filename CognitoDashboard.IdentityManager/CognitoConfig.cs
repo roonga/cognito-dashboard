@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-
-namespace CognitoDashboard.IdentityManager
+﻿namespace CognitoDashboard.IdentityManager
 {
     public class CognitoConfig
     {
@@ -20,7 +17,5 @@ namespace CognitoDashboard.IdentityManager
         public string RedirectUri { get; set; }
         
         public string PostLogoutRedirectUri { get; set; }
-
-        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }
