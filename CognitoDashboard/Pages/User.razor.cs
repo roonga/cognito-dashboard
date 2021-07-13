@@ -4,12 +4,10 @@ using System.Threading.Tasks;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace CognitoDashboard.Pages
 {
-    [Authorize]
     public partial class User : ComponentBase
     {
         [Inject]

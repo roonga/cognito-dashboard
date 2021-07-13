@@ -6,13 +6,11 @@ using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
 using CognitoDashboard.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace CognitoDashboard.Pages
 {
-    [Authorize]
     public partial class Users : ComponentBase
     {
         [Inject]

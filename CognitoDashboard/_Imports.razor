@@ -1,4 +1,5 @@
 ﻿@using System.Net.Http
+@using CognitoDashboard.Authorization
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -9,4 +10,4 @@
 @using CognitoDashboard
 @using CognitoDashboard.Shared
 
-@attribute [Authorize]
+@attribute [Authorize(Policy = PolicyName.DashboardAdministrators)]

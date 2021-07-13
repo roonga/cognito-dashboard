@@ -1,6 +1,8 @@
+using CognitoDashboard.Authorization;
 using CognitoDashboard.IdentityManager;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -64,6 +66,13 @@ namespace CognitoDashboard
                     SecurePolicy = CookieSecurePolicy.Always
                 };
             });
+
+            // authorization for dashboard
+            services.AddAuthorization(options =>
+                options.AddPolicy(PolicyName.DashboardAdministrators, policy => policy.Requirements.Add(new DashboardAuthorizationRequirement("dashboard-administrators")))
+            );
+
+            services.AddSingleton<IAuthorizationHandler, DashboardAuthorizationHandler>();
 
             services.AddHttpContextAccessor();
             services.AddRazorPages();
