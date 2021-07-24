@@ -7,7 +7,7 @@ namespace CognitoDashboard.IdentityManager
 {
     public static class Startup
     {
-        public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+        public static void ConfigureIdentityManager(this IServiceCollection services, IConfiguration configuration)
         {
             var cognitoConfig = configuration.GetSection(CognitoConfig.Name).Get<CognitoConfig>();
             var region = RegionEndpoint.GetBySystemName(cognitoConfig.Region);

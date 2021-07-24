@@ -80,7 +80,7 @@ namespace CognitoDashboard
                 .AddMicrosoftIdentityConsentHandler();
 
             //services
-            IdentityManager.Startup.ConfigureServices(Configuration, services);
+            services.ConfigureIdentityManager(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
