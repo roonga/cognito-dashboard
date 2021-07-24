@@ -7,7 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitoDashboard", "Cognito
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitoDashboard.IdentityManager", "CognitoDashboard.IdentityManager\CognitoDashboard.IdentityManager.csproj", "{5DB423F5-9ABA-43A4-A38A-AEB3CB5CAF41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CognitoDashboard.Tests", "CognitoDashboard.Tests\CognitoDashboard.Tests.csproj", "{C35D43F1-CE43-4DD3-9A9E-139EA628886A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CognitoDashboard.Tests", "CognitoDashboard.Tests\CognitoDashboard.Tests.csproj", "{C35D43F1-CE43-4DD3-9A9E-139EA628886A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".cloudformation", ".cloudformation", "{94F51738-F9CA-4BA7-A149-54E3B830D696}"
+	ProjectSection(SolutionItems) = preProject
+		.cloudformation\create-ecr.sh = .cloudformation\create-ecr.sh
+		.cloudformation\demo-cognito-stack.sh = .cloudformation\demo-cognito-stack.sh
+		.cloudformation\demo-cognito-stack.yml = .cloudformation\demo-cognito-stack.yml
+		.cloudformation\logo.png = .cloudformation\logo.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github-workflows", ".github-workflows", "{E8A5CDFB-D0DF-4BE0-B316-770738DA6B57}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\deploy.yml = .github\workflows\deploy.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
