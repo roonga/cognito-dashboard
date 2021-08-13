@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.CognitoIdentityProvider.Model;
@@ -68,6 +69,28 @@ namespace CognitoDashboard.Pages
         private void ClearSuccessMessages() => _successMessages = new();
 
         private void ClearErrorMessages() => _errorMessages = new();
+
+        private async Task UpdateUser()
+        {
+            _errorMessages = new();
+            _successMessages = new();
+
+            try
+            {
+                var updateRequest = new AdminUpdateUserAttributesRequest();
+                var updateResponse = await IdentityProviderClientFactory.Client.AdminUpdateUserAttributesAsync(updateRequest, CancellationToken.None);
+
+                if (updateResponse.HttpStatusCode == HttpStatusCode.OK)
+                {
+                    _isEditMode = false;
+                    _successMessages.Add("Saved Successfully");
+                }
+            }
+            catch (AmazonServiceException e)
+            {
+                _errorMessages.Add(e.Message);
+            }
+        }
 
         private async Task ConfirmDeleteUser()
         {

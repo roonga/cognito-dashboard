@@ -57,7 +57,7 @@ else
                 {
                     <div class="mb-3">
                         <label for="@attr.Name" class="form-label">@attr.Name.ToTitleCase()</label>
-                        <input class="form-control" id="@attr.Name" placeholder="@attr.Name" readonly value="@attr.Value">
+                        <input class="form-control" id="@attr.Name" placeholder="@attr.Name" readonly="@IsReadOnly" value="@attr.Value">
                     </div>
                 }
 
