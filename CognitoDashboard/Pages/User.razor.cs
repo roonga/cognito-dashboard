@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
@@ -24,6 +21,7 @@ namespace CognitoDashboard.Pages
         public string UserName { get; set; }
 
         private bool _isEditMode = false;
+        private bool _isEnabled = false;
         private bool _isDeleteMode = false;
 
         private bool IsReadOnly => !_isEditMode;
@@ -39,6 +37,13 @@ namespace CognitoDashboard.Pages
 
         private void Edit() => _isEditMode = true;
         private void Delete() => _isDeleteMode = true;
+        
+        private void Disable()
+        {
+            _isEnabled = false;
+        }
+
+        private void Enable() => _isEnabled = true;
 
         private void Cancel()
         {

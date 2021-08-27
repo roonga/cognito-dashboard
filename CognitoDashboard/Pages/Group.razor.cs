@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
@@ -84,6 +81,9 @@ namespace CognitoDashboard.Pages
 
             try
             {
+                if (string.IsNullOrWhiteSpace(_updateRequest.RoleArn))
+                    _updateRequest.RoleArn = null;
+
                 _updateResponse = await IdentityProviderClientFactory.Client.UpdateGroupAsync(_updateRequest, CancellationToken.None);
 
                 if (_updateResponse.HttpStatusCode == HttpStatusCode.OK)

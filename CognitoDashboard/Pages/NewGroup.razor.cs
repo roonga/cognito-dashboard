@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Amazon.CognitoIdentityProvider.Model;
+﻿using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
 using Microsoft.AspNetCore.Components;
