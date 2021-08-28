@@ -16,7 +16,10 @@ namespace CognitoDashboard.IdentityManager
 
         static IdentityProviderClientProxy() {}
 
-        public IAmazonCognitoIdentityProvider Client(IAmazonCognitoIdentityProvider client, IHttpContextAccessor httpContextAccessor, ILogger<IAmazonCognitoIdentityProvider> logger) 
+        public IAmazonCognitoIdentityProvider Client(
+            IAmazonCognitoIdentityProvider client, 
+            IHttpContextAccessor httpContextAccessor, 
+            ILogger<IAmazonCognitoIdentityProvider> logger) 
         {
             var provider = (IdentityProviderClientProxy<T>)_provider;
             provider._client = client;
@@ -35,6 +38,7 @@ namespace CognitoDashboard.IdentityManager
                 var result = targetMethod.Invoke(_client, args);
 
                 LogAfter(targetMethod, args, result);
+
                 return result;
             }
             catch (Exception ex) when (ex is TargetInvocationException)

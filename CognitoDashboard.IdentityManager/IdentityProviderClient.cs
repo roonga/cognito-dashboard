@@ -11,7 +11,11 @@ namespace CognitoDashboard.IdentityManager
         private readonly ILogger<IAmazonCognitoIdentityProvider> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IdentityProviderClient(IAmazonCognitoIdentityProvider client, IdentityProviderClientProxy<IAmazonCognitoIdentityProvider> proxy, ILogger<IAmazonCognitoIdentityProvider> logger, IHttpContextAccessor httpContextAccessor)
+        public IdentityProviderClient(
+            IAmazonCognitoIdentityProvider client, 
+            IdentityProviderClientProxy<IAmazonCognitoIdentityProvider> proxy, 
+            ILogger<IAmazonCognitoIdentityProvider> logger, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _client = client;
             _proxy = proxy;
