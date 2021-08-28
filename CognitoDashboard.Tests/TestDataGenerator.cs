@@ -1,95 +1,99 @@
-﻿//using System.Net;
-//using Amazon.CognitoIdentityProvider;
-//using Amazon.CognitoIdentityProvider.Model;
-//using CognitoDashboard.IdentityManager;
-//using CognitoDashboard.Tests.Fakes;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.Logging.Abstractions;
-//using Xunit;
+﻿using System.Net;
+using Amazon.CognitoIdentityProvider;
+using Amazon.CognitoIdentityProvider.Model;
+using CognitoDashboard.IdentityManager;
+using CognitoDashboard.Tests.Fakes;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
+using Xunit;
 
-//namespace CognitoDashboard.Tests
-//{
-//    public class TestDataGenerator
-//    {
-//        [Fact(Skip = "Test Data")]
-//        public async Task Create_User_Basic_Test()
-//        {
-//            var logger = new NullLogger<IdentityProviderClient>();
-//            var idpClient = new AmazonCognitoIdentityProviderClient();
-//            var fakeHttpContextAccessor = new FakeHttpContextAccessor();
-//            var idp = new IdentityProviderClient(logger, fakeHttpContextAccessor, idpClient);
+namespace CognitoDashboard.Tests
+{
+    public class TestDataGenerator
+    {
+        [Fact(Skip = "Test Data")]
+        public async Task Create_User_Basic_Test()
+        {
+            var idpClient = new AmazonCognitoIdentityProviderClient();
+            var proxy = new IdentityProviderProxy<IAmazonCognitoIdentityProvider>();
+            var logger = new NullLogger<IAmazonCognitoIdentityProvider>();
+            var fakeHttpContextAccessor = new FakeHttpContextAccessor();
 
-//            var configuration = new ConfigurationBuilder()
-//                .AddJsonFile("appsettings.json", false, true)
-//                .Build();
+            var idp = new IdentityProviderBuilder(idpClient, proxy, logger, fakeHttpContextAccessor);
 
-//            var cognitoConfig = configuration.GetSection(CognitoConfig.Name).Get<CognitoConfig>();
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
 
-//            for (var i = 0; i < 101; i++)
-//            {
-//                //setup
-//                var email = $"{Faker.Name.First()}.{Faker.Name.First()}.test@roonga.com.au";
-//                var request = new AdminCreateUserRequest
-//                {
-//                    UserPoolId = cognitoConfig.UserPoolId,
-//                    Username = email,
-//                    MessageAction = "SUPPRESS",
-//                    UserAttributes = new List<AttributeType>
-//                    {
-//                        new() {Name = "email", Value = email},
-//                        new() {Name = "email_verified", Value = "true"}
-//                    }
-//                };
+            var cognitoConfig = configuration.GetSection(CognitoConfig.Name).Get<CognitoConfig>();
 
-//                //act
-//                var response = await idp.AdminCreateUserAsync(request, CancellationToken.None);
+            for (var i = 0; i < 101; i++)
+            {
+                //setup
+                var email = $"{Faker.Name.First()}.{Faker.Name.First()}.test@roonga.com.au";
+                var request = new AdminCreateUserRequest
+                {
+                    UserPoolId = cognitoConfig.UserPoolId,
+                    Username = email,
+                    MessageAction = "SUPPRESS",
+                    UserAttributes = new List<AttributeType>
+                    {
+                        new() {Name = "email", Value = email},
+                        new() {Name = "email_verified", Value = "true"}
+                    }
+                };
 
-//                //assert
-//                Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);
-//            }
-//        }
+                //act
+                var response = await idp.Proxy.AdminCreateUserAsync(request, CancellationToken.None);
 
-//        [Fact(Skip = "Test Data")]
-//        public async Task Create_Group_Test()
-//        {
-//            var logger = new NullLogger<IdentityProviderClient>();
-//            var idpClient = new AmazonCognitoIdentityProviderClient();
-//            var fakeHttpContextAccessor = new FakeHttpContextAccessor();
-//            var idp = new IdentityProviderClient(logger, fakeHttpContextAccessor, idpClient);
+                //assert
+                Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);
+            }
+        }
 
-//            var configuration = new ConfigurationBuilder()
-//                .AddJsonFile("appsettings.json", false, true)
-//                .Build();
+        [Fact(Skip = "Test Data")]
+        public async Task Create_Group_Test()
+        {
+            var idpClient = new AmazonCognitoIdentityProviderClient();
+            var proxy = new IdentityProviderProxy<IAmazonCognitoIdentityProvider>();
+            var logger = new NullLogger<IAmazonCognitoIdentityProvider>();
+            var fakeHttpContextAccessor = new FakeHttpContextAccessor();
 
-//            var cognitoConfig = configuration.GetSection(CognitoConfig.Name).Get<CognitoConfig>();
+            var idp = new IdentityProviderBuilder(idpClient, proxy, logger, fakeHttpContextAccessor);
 
-//            for (var i = 0; i < 31; i++)
-//            {
-//                //setup
-//                var groupName = Faker.Country.TwoLetterCode();
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
 
-//                var request = new CreateGroupRequest
-//                {
-//                    UserPoolId = cognitoConfig.UserPoolId,
-//                    GroupName = groupName,
-//                    Description = $"{groupName} Group",
-//                    RoleArn = null,
-//                    Precedence = Faker.RandomNumber.Next(100)
-//                };
+            var cognitoConfig = configuration.GetSection(CognitoConfig.Name).Get<CognitoConfig>();
 
-//                try
-//                {
-//                    //act
-//                    var response = await idp.CreateGroupAsync(request, CancellationToken.None);
+            for (var i = 0; i < 31; i++)
+            {
+                //setup
+                var groupName = Faker.Country.TwoLetterCode();
 
-//                    //assert
-//                    Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);
-//                }
-//                catch (GroupExistsException)
-//                {
-//                    continue;
-//                }
-//            }
-//        }
-//    }
-//}
+                var request = new CreateGroupRequest
+                {
+                    UserPoolId = cognitoConfig.UserPoolId,
+                    GroupName = groupName,
+                    Description = $"{groupName} Group",
+                    RoleArn = null,
+                    Precedence = Faker.RandomNumber.Next(100)
+                };
+
+                try
+                {
+                    //act
+                    var response = await idp.Proxy.CreateGroupAsync(request, CancellationToken.None);
+
+                    //assert
+                    Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);
+                }
+                catch (GroupExistsException)
+                {
+                    continue;
+                }
+            }
+        }
+    }
+}

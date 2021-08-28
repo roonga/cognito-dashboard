@@ -9,7 +9,7 @@ namespace CognitoDashboard.Pages
     public partial class GroupUsers : ComponentBase
     {
         [Inject]
-        private IdentityProviderClient IdentityProviderClient { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -62,7 +62,7 @@ namespace CognitoDashboard.Pages
                     NextToken = (_response?.NextToken != null) ? _response.NextToken : null
                 };
 
-                _response = await IdentityProviderClient.Proxy.ListUsersInGroupAsync(_request, CancellationToken.None);
+                _response = await IdentityProvider.Proxy.ListUsersInGroupAsync(_request, CancellationToken.None);
                 var users = _response?.Users.Select(u => new UserTypeModel(u)).ToList();
 
                 if(_users == null)
@@ -130,7 +130,7 @@ namespace CognitoDashboard.Pages
                         };
 
                         _isProcessingMessage = $"Please wait. Removing {++current} of {total} from {GroupName}";
-                        await IdentityProviderClient.Proxy.AdminRemoveUserFromGroupAsync(request, CancellationToken.None);
+                        await IdentityProvider.Proxy.AdminRemoveUserFromGroupAsync(request, CancellationToken.None);
 
                         string displayName = null;
                         if (@user.UserType.Attributes.FirstOrDefault(a => a.Name == "email") != null)

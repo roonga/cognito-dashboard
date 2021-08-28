@@ -12,7 +12,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClient IdentityProviderClient { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -63,7 +63,7 @@ namespace CognitoDashboard.Pages
                     Username = UserName
                 };
 
-                _response = await IdentityProviderClient.Proxy.AdminGetUserAsync(getRequest, CancellationToken.None);
+                _response = await IdentityProvider.Proxy.AdminGetUserAsync(getRequest, CancellationToken.None);
             }
             catch (AmazonServiceException e)
             {
@@ -83,7 +83,7 @@ namespace CognitoDashboard.Pages
             try
             {
                 var updateRequest = new AdminUpdateUserAttributesRequest();
-                var updateResponse = await IdentityProviderClient.Proxy.AdminUpdateUserAttributesAsync(updateRequest, CancellationToken.None);
+                var updateResponse = await IdentityProvider.Proxy.AdminUpdateUserAttributesAsync(updateRequest, CancellationToken.None);
 
                 if (updateResponse.HttpStatusCode == HttpStatusCode.OK)
                 {
@@ -110,7 +110,7 @@ namespace CognitoDashboard.Pages
                     Username = UserName
                 };
 
-                var deleteResponse = await IdentityProviderClient.Proxy.AdminDeleteUserAsync(deleteRequest, CancellationToken.None);
+                var deleteResponse = await IdentityProvider.Proxy.AdminDeleteUserAsync(deleteRequest, CancellationToken.None);
                 NavigationManager.NavigateTo("/users");
             }
             catch (AmazonServiceException e)

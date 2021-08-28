@@ -12,7 +12,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClient IdentityProviderClient { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -57,7 +57,7 @@ namespace CognitoDashboard.Pages
                     GroupName = GroupName
                 };
 
-                var getResponse = await IdentityProviderClient.Proxy.GetGroupAsync(getRequest, CancellationToken.None);
+                var getResponse = await IdentityProvider.Proxy.GetGroupAsync(getRequest, CancellationToken.None);
 
                 _updateRequest = new UpdateGroupRequest
                 {
@@ -84,7 +84,7 @@ namespace CognitoDashboard.Pages
                 if (string.IsNullOrWhiteSpace(_updateRequest.RoleArn))
                     _updateRequest.RoleArn = null;
 
-                _updateResponse = await IdentityProviderClient.Proxy.UpdateGroupAsync(_updateRequest, CancellationToken.None);
+                _updateResponse = await IdentityProvider.Proxy.UpdateGroupAsync(_updateRequest, CancellationToken.None);
 
                 if (_updateResponse.HttpStatusCode == HttpStatusCode.OK)
                 {
@@ -115,7 +115,7 @@ namespace CognitoDashboard.Pages
                     GroupName = GroupName
                 };
 
-                var deleteResponse = await IdentityProviderClient.Proxy.DeleteGroupAsync(deleteRequest, CancellationToken.None);
+                var deleteResponse = await IdentityProvider.Proxy.DeleteGroupAsync(deleteRequest, CancellationToken.None);
                 NavigationManager.NavigateTo("/groups");
             }
             catch (AmazonServiceException e)

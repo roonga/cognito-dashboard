@@ -13,8 +13,8 @@ namespace CognitoDashboard.IdentityManager
             var region = RegionEndpoint.GetBySystemName(cognitoConfig.Region);
 
             services.AddSingleton(cognitoConfig);
-            services.AddSingleton<IdentityProviderClient>();
-            services.AddSingleton<IdentityProviderClientProxy<IAmazonCognitoIdentityProvider>>();
+            services.AddSingleton<IdentityProviderBuilder>();
+            services.AddSingleton<IdentityProviderProxy<IAmazonCognitoIdentityProvider>>();
             services.AddSingleton<IAmazonCognitoIdentityProvider>(new AmazonCognitoIdentityProviderClient(region));
         }
     }

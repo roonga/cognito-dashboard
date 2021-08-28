@@ -6,22 +6,22 @@ using Microsoft.Extensions.Logging;
 namespace CognitoDashboard.IdentityManager
 {
     // ref: https://jonskeet.uk/csharp/singleton.html, forth version
-    public class IdentityProviderClientProxy<T> : DispatchProxy where T : IAmazonCognitoIdentityProvider
+    public class IdentityProviderProxy<T> : DispatchProxy where T : IAmazonCognitoIdentityProvider
     {
-        private static readonly IAmazonCognitoIdentityProvider _provider = Create<T, IdentityProviderClientProxy<T>>();
+        private static readonly IAmazonCognitoIdentityProvider _provider = Create<T, IdentityProviderProxy<T>>();
         
         private IAmazonCognitoIdentityProvider _client;
         private ILogger<IAmazonCognitoIdentityProvider> _logger;
         private IHttpContextAccessor _httpContextAccessor;
 
-        static IdentityProviderClientProxy() {}
+        static IdentityProviderProxy() {}
 
-        public IAmazonCognitoIdentityProvider Client(
+        public IAmazonCognitoIdentityProvider Instance(
             IAmazonCognitoIdentityProvider client, 
             IHttpContextAccessor httpContextAccessor, 
             ILogger<IAmazonCognitoIdentityProvider> logger) 
         {
-            var provider = (IdentityProviderClientProxy<T>)_provider;
+            var provider = (IdentityProviderProxy<T>)_provider;
             provider._client = client;
             provider._httpContextAccessor = httpContextAccessor;
             provider._logger = logger;
