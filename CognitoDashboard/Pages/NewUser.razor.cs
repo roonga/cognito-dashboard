@@ -12,7 +12,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderClient IdentityProviderClient { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -67,7 +67,7 @@ namespace CognitoDashboard.Pages
 
             try
             {
-                var response = await IdentityProviderClientFactory.Client.AdminCreateUserAsync(_request, CancellationToken.None);
+                var response = await IdentityProviderClient.Proxy.AdminCreateUserAsync(_request, CancellationToken.None);
                 NavigationManager.NavigateTo("users");
             }
             catch (AmazonServiceException e)

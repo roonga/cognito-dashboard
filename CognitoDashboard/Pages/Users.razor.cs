@@ -10,7 +10,7 @@ namespace CognitoDashboard.Pages
     public partial class Users : ComponentBase
     {
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderClient IdentityProviderClient { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -66,7 +66,7 @@ namespace CognitoDashboard.Pages
                 _request.Limit = _pageLimit;
                 _request.PaginationToken = (_response?.PaginationToken != null) ? _response.PaginationToken : null;
 
-                _response = await IdentityProviderClientFactory.Client.ListUsersAsync(_request, CancellationToken.None);
+                _response = await IdentityProviderClient.Proxy.ListUsersAsync(_request, CancellationToken.None);
                 var users = _response?.Users.Select(u => new UserTypeModel(u)).ToList();
 
                 if (users != null)
@@ -163,7 +163,7 @@ namespace CognitoDashboard.Pages
                         };
 
                         _isProcessingMessage = $"Please wait. Adding {++current} of {total} to {GroupName}";
-                        await IdentityProviderClientFactory.Client.AdminAddUserToGroupAsync(request, CancellationToken.None);
+                        await IdentityProviderClient.Proxy.AdminAddUserToGroupAsync(request, CancellationToken.None);
 
                         string displayName = null;
                         if (@user.UserType.Attributes.FirstOrDefault(a => a.Name == "email") != null)

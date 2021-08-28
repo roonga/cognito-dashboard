@@ -1,17 +1,29 @@
 ﻿using System.Reflection;
+using Amazon.CognitoIdentityProvider;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace CognitoDashboard.IdentityManager
 {
-    public class IdentityProviderClientProxy<T> : DispatchProxy where T : IIdentityProviderClient
+    // ref: https://jonskeet.uk/csharp/singleton.html, forth version
+    public class IdentityProviderClientProxy<T> : DispatchProxy where T : IAmazonCognitoIdentityProvider
     {
-        private IIdentityProviderClient _client;
+        private static readonly IAmazonCognitoIdentityProvider _provider = Create<T, IdentityProviderClientProxy<T>>();
+        
+        private IAmazonCognitoIdentityProvider _client;
+        private ILogger<IAmazonCognitoIdentityProvider> _logger;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public static IIdentityProviderClient Create(IIdentityProviderClient decorated)
+        static IdentityProviderClientProxy() {}
+
+        public IAmazonCognitoIdentityProvider Client(IAmazonCognitoIdentityProvider client, IHttpContextAccessor httpContextAccessor, ILogger<IAmazonCognitoIdentityProvider> logger) 
         {
-            object proxy = Create<T, IdentityProviderClientProxy<T>>();
-            ((IdentityProviderClientProxy<T>)proxy)._client = decorated;
-            return (IIdentityProviderClient)proxy;
+            var provider = (IdentityProviderClientProxy<T>)_provider;
+            provider._client = client;
+            provider._httpContextAccessor = httpContextAccessor;
+            provider._logger = logger;
+
+            return _provider;
         }
 
         protected override object Invoke(MethodInfo targetMethod, object[] args)
@@ -34,18 +46,18 @@ namespace CognitoDashboard.IdentityManager
 
         private void LogException(Exception exception, MethodInfo methodInfo = null)
         {
-            _client.Logger.LogError(exception, "EXCEPTION:: Username:{username}; Operation:{MethodName}", _client.HttpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name);
+            _logger.LogError(exception, "EXCEPTION:: Username:{username}; Operation:{MethodName}", _httpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name);
         }
 
         private void LogBefore(MethodInfo methodInfo, object[] args)
         {
-            _client.Logger.LogInformation("Username:{username}; Operation:{MethodName}", _client.HttpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name);
-            _client.Logger.LogDebug("BEFORE :: Username:{username}; Operation:{MethodName}, Request:{@args}", _client.HttpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name, args);
+            _logger.LogInformation("Username:{username}; Operation:{MethodName}", _httpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name);
+            _logger.LogDebug("BEFORE :: Username:{username}; Operation:{MethodName}, Request:{@args}", _httpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name, args);
         }
 
         private void LogAfter(MethodInfo methodInfo, object[] args, object result)
         {
-            _client.Logger.LogDebug("AFTER :: Username:{username}; Operation:{MethodName}, Request:{@args}", _client.HttpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name, args);
+            _logger.LogDebug("AFTER :: Username:{username}; Operation:{MethodName}, Request:{@args}", _httpContextAccessor.HttpContext.User.Identifier(), methodInfo.Name, args);
         }
     }
 }

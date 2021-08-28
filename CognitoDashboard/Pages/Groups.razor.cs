@@ -9,7 +9,7 @@ namespace CognitoDashboard.Pages
     public partial class Groups : ComponentBase
     {
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderClient IdentityProviderClient { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -53,7 +53,7 @@ namespace CognitoDashboard.Pages
                 _error = null;
                 _request.NextToken = (_response?.NextToken != null) ? _response.NextToken : null;
                 _request.Limit = _pageLimit;
-                _response = await IdentityProviderClientFactory.Client.ListGroupsAsync(_request, CancellationToken.None);
+                _response = await IdentityProviderClient.Proxy.ListGroupsAsync(_request, CancellationToken.None);
                 _groups.AddRange(_response.Groups.Select(g => new GroupTypeModel(g)));
             }
             catch (AmazonServiceException e)

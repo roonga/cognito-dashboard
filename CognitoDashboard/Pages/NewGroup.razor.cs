@@ -11,7 +11,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderClient IdentityProviderClient { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -33,7 +33,7 @@ namespace CognitoDashboard.Pages
 
             try
             {
-                var response = await IdentityProviderClientFactory.Client.CreateGroupAsync(_request, CancellationToken.None);
+                var response = await IdentityProviderClient.Proxy.CreateGroupAsync(_request, CancellationToken.None);
                 NavigationManager.NavigateTo("Groups");
             }
             catch (AmazonServiceException e)
