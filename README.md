@@ -1,5 +1,7 @@
 # Cognito Dashboard
 
+Pl. note this is work in progress
+
 This is a general purpose AWS Cognito User Management dashboard.
 
 ![Screenshot](/images/screenshot-users.png)
