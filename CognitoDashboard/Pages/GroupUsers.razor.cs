@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Amazon.CognitoIdentityProvider.Model;
+﻿using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
 using CognitoDashboard.Models;
@@ -13,7 +9,7 @@ namespace CognitoDashboard.Pages
     public partial class GroupUsers : ComponentBase
     {
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -66,7 +62,7 @@ namespace CognitoDashboard.Pages
                     NextToken = (_response?.NextToken != null) ? _response.NextToken : null
                 };
 
-                _response = await IdentityProviderClientFactory.Client.ListUsersInGroupAsync(_request, CancellationToken.None);
+                _response = await IdentityProvider.Proxy.ListUsersInGroupAsync(_request, CancellationToken.None);
                 var users = _response?.Users.Select(u => new UserTypeModel(u)).ToList();
 
                 if(_users == null)
@@ -134,7 +130,7 @@ namespace CognitoDashboard.Pages
                         };
 
                         _isProcessingMessage = $"Please wait. Removing {++current} of {total} from {GroupName}";
-                        await IdentityProviderClientFactory.Client.AdminRemoveUserFromGroupAsync(request, CancellationToken.None);
+                        await IdentityProvider.Proxy.AdminRemoveUserFromGroupAsync(request, CancellationToken.None);
 
                         string displayName = null;
                         if (@user.UserType.Attributes.FirstOrDefault(a => a.Name == "email") != null)

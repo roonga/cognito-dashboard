@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
@@ -14,7 +12,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -23,6 +21,7 @@ namespace CognitoDashboard.Pages
         public string UserName { get; set; }
 
         private bool _isEditMode = false;
+        private bool _isEnabled = false;
         private bool _isDeleteMode = false;
 
         private bool IsReadOnly => !_isEditMode;
@@ -38,6 +37,13 @@ namespace CognitoDashboard.Pages
 
         private void Edit() => _isEditMode = true;
         private void Delete() => _isDeleteMode = true;
+        
+        private void Disable()
+        {
+            _isEnabled = false;
+        }
+
+        private void Enable() => _isEnabled = true;
 
         private void Cancel()
         {
@@ -57,7 +63,7 @@ namespace CognitoDashboard.Pages
                     Username = UserName
                 };
 
-                _response = await IdentityProviderClientFactory.Client.AdminGetUserAsync(getRequest, CancellationToken.None);
+                _response = await IdentityProvider.Proxy.AdminGetUserAsync(getRequest, CancellationToken.None);
             }
             catch (AmazonServiceException e)
             {
@@ -68,6 +74,28 @@ namespace CognitoDashboard.Pages
         private void ClearSuccessMessages() => _successMessages = new();
 
         private void ClearErrorMessages() => _errorMessages = new();
+
+        private async Task UpdateUser()
+        {
+            _errorMessages = new();
+            _successMessages = new();
+
+            try
+            {
+                var updateRequest = new AdminUpdateUserAttributesRequest();
+                var updateResponse = await IdentityProvider.Proxy.AdminUpdateUserAttributesAsync(updateRequest, CancellationToken.None);
+
+                if (updateResponse.HttpStatusCode == HttpStatusCode.OK)
+                {
+                    _isEditMode = false;
+                    _successMessages.Add("Saved Successfully");
+                }
+            }
+            catch (AmazonServiceException e)
+            {
+                _errorMessages.Add(e.Message);
+            }
+        }
 
         private async Task ConfirmDeleteUser()
         {
@@ -82,7 +110,7 @@ namespace CognitoDashboard.Pages
                     Username = UserName
                 };
 
-                var deleteResponse = await IdentityProviderClientFactory.Client.AdminDeleteUserAsync(deleteRequest, CancellationToken.None);
+                var deleteResponse = await IdentityProvider.Proxy.AdminDeleteUserAsync(deleteRequest, CancellationToken.None);
                 NavigationManager.NavigateTo("/users");
             }
             catch (AmazonServiceException e)

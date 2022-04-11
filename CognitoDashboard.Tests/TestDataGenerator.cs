@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using CognitoDashboard.IdentityManager;
@@ -17,10 +14,12 @@ namespace CognitoDashboard.Tests
         [Fact(Skip = "Test Data")]
         public async Task Create_User_Basic_Test()
         {
-            var logger = new NullLogger<IdentityProviderClient>();
             var idpClient = new AmazonCognitoIdentityProviderClient();
+            var proxy = new IdentityProviderProxy<IAmazonCognitoIdentityProvider>();
+            var logger = new NullLogger<IAmazonCognitoIdentityProvider>();
             var fakeHttpContextAccessor = new FakeHttpContextAccessor();
-            var idp = new IdentityProviderClient(logger, fakeHttpContextAccessor, idpClient);
+
+            var idp = new IdentityProviderBuilder(idpClient, proxy, logger, fakeHttpContextAccessor);
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
@@ -45,7 +44,7 @@ namespace CognitoDashboard.Tests
                 };
 
                 //act
-                var response = await idp.AdminCreateUserAsync(request, CancellationToken.None);
+                var response = await idp.Proxy.AdminCreateUserAsync(request, CancellationToken.None);
 
                 //assert
                 Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);
@@ -55,10 +54,12 @@ namespace CognitoDashboard.Tests
         [Fact(Skip = "Test Data")]
         public async Task Create_Group_Test()
         {
-            var logger = new NullLogger<IdentityProviderClient>();
             var idpClient = new AmazonCognitoIdentityProviderClient();
+            var proxy = new IdentityProviderProxy<IAmazonCognitoIdentityProvider>();
+            var logger = new NullLogger<IAmazonCognitoIdentityProvider>();
             var fakeHttpContextAccessor = new FakeHttpContextAccessor();
-            var idp = new IdentityProviderClient(logger, fakeHttpContextAccessor, idpClient);
+
+            var idp = new IdentityProviderBuilder(idpClient, proxy, logger, fakeHttpContextAccessor);
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)
@@ -83,7 +84,7 @@ namespace CognitoDashboard.Tests
                 try
                 {
                     //act
-                    var response = await idp.CreateGroupAsync(request, CancellationToken.None);
+                    var response = await idp.Proxy.CreateGroupAsync(request, CancellationToken.None);
 
                     //assert
                     Assert.Equal(HttpStatusCode.OK, response.HttpStatusCode);

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
@@ -15,7 +12,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -60,7 +57,7 @@ namespace CognitoDashboard.Pages
                     GroupName = GroupName
                 };
 
-                var getResponse = await IdentityProviderClientFactory.Client.GetGroupAsync(getRequest, CancellationToken.None);
+                var getResponse = await IdentityProvider.Proxy.GetGroupAsync(getRequest, CancellationToken.None);
 
                 _updateRequest = new UpdateGroupRequest
                 {
@@ -84,7 +81,10 @@ namespace CognitoDashboard.Pages
 
             try
             {
-                _updateResponse = await IdentityProviderClientFactory.Client.UpdateGroupAsync(_updateRequest, CancellationToken.None);
+                if (string.IsNullOrWhiteSpace(_updateRequest.RoleArn))
+                    _updateRequest.RoleArn = null;
+
+                _updateResponse = await IdentityProvider.Proxy.UpdateGroupAsync(_updateRequest, CancellationToken.None);
 
                 if (_updateResponse.HttpStatusCode == HttpStatusCode.OK)
                 {
@@ -115,7 +115,7 @@ namespace CognitoDashboard.Pages
                     GroupName = GroupName
                 };
 
-                var deleteResponse = await IdentityProviderClientFactory.Client.DeleteGroupAsync(deleteRequest, CancellationToken.None);
+                var deleteResponse = await IdentityProvider.Proxy.DeleteGroupAsync(deleteRequest, CancellationToken.None);
                 NavigationManager.NavigateTo("/groups");
             }
             catch (AmazonServiceException e)

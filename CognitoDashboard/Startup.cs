@@ -3,16 +3,8 @@ using CognitoDashboard.IdentityManager;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using System.Threading.Tasks;
 
 namespace CognitoDashboard
 {
@@ -80,7 +72,7 @@ namespace CognitoDashboard
                 .AddMicrosoftIdentityConsentHandler();
 
             //services
-            IdentityManager.Startup.ConfigureServices(Configuration, services);
+            services.ConfigureIdentityManager(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

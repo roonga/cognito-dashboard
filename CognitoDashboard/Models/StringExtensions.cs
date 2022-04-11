@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace CognitoDashboard.Models
+﻿namespace CognitoDashboard.Models
 {
     public static class StringExtensions
     {

@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Amazon.CognitoIdentityProvider.Model;
+﻿using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
 using Microsoft.AspNetCore.Components;
@@ -13,7 +11,7 @@ namespace CognitoDashboard.Pages
         private NavigationManager NavigationManager { get; set; }
 
         [Inject]
-        private IdentityProviderClientFactory IdentityProviderClientFactory { get; set; }
+        private IdentityProviderBuilder IdentityProvider { get; set; }
 
         [Inject]
         private CognitoConfig CognitoConfig { get; set; }
@@ -35,7 +33,7 @@ namespace CognitoDashboard.Pages
 
             try
             {
-                var response = await IdentityProviderClientFactory.Client.CreateGroupAsync(_request, CancellationToken.None);
+                var response = await IdentityProvider.Proxy.CreateGroupAsync(_request, CancellationToken.None);
                 NavigationManager.NavigateTo("Groups");
             }
             catch (AmazonServiceException e)
