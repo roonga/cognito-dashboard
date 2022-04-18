@@ -16,7 +16,7 @@ This is a general purpose AWS Cognito User Management dashboard.
 
     [Sample CloudFormation file](.cloudformation/demo-cognito-stack.yml)
 
-    [Deployment & Hosted UI customization script sample](.cloudformation\demo-cognito-stack.sh)
+    [Deployment & Hosted UI customization script sample](.cloudformation/demo-cognito-stack.sh)
 
 2. Configure Hosted UI
 
