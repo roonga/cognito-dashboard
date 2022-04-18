@@ -44,6 +44,7 @@ Resources:
         - openid
         - profile
       CallbackURLs:
+        - 'https://localhost:5001/'
         - 'https://localhost:5001/signin-oidc'
       LogoutURLs:
         - 'https://localhost:5001'
