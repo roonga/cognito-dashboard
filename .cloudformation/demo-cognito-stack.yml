@@ -66,6 +66,24 @@ Resources:
       GroupName: dashboard-administrators
       UserPoolId: !Ref DashboardUserPool
 
+  DashboardServiceUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: "cognito-dashboard-service-user"
+      Path: "/"
+      Policies:
+      - PolicyName: cognito-admin
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cognito-identity:*
+            - cognito-idp:*
+            - cognito-sync:*
+            Resource:
+            - !GetAtt DashboardUserPool.Arn
+
 Outputs:
   UserPoolId:
     Value: !Ref DashboardUserPool
