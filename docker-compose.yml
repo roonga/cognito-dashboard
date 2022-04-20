@@ -3,7 +3,7 @@ services:
   cognito-dashboard:
     image: roonga/cognito-dashboard:0.1
     ports:
-      - 5000:80
+      - <your port>:80
     environment:
       AWS_REGION: "<AWS Region>"
       AWS_ACCESS_KEY_ID: "<AWS Access Key>"
