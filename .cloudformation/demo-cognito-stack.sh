@@ -5,7 +5,7 @@ aws cloudformation deploy \
     --template-file demo-cognito-stack.yml \
 
 # optional: create access key for the service user
-aws iam create-access-key --user-name cognito-dashboard-service-user
+# aws iam create-access-key --user-name cognito-dashboard-service-user
 
 # optional: enable termination protection
 aws cloudformation update-termination-protection --stack-name demo-cognito-dashboard --enable-termination-protection

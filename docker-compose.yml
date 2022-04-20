@@ -1,0 +1,16 @@
+version: "2.2"
+services:
+  cognito-dashboard:
+    image: roonga/cognito-dashboard:0.1
+    ports:
+      - 5000:80
+    environment:
+      AWS_REGION: "<AWS Region>"
+      AWS_ACCESS_KEY_ID: "<AWS Access Key>"
+      AWS_SECRET_ACCESS_KEY: "<AWS Access Secret>"
+      Cognito__UserPoolId: "<Cognito User Pool Id>"
+      Cognito__DashboardClientId: "<App Client Id>"
+      Cognito__DashboardClientSecret: "<App Client Secret>"
+      Cognito__Region: "<User Pool AWS Region>"
+      Cognito__RedirectUri: "http://<your url>/signin-oidc"
+      Cognito__PostLogoutRedirectUri: "http://<your url>"

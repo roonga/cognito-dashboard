@@ -456,3 +456,5 @@ $RECYCLE.BIN/
 ## dev
 appsettings.Development.json
 CognitoDashboard/secrets.json
+.dev/
+

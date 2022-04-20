@@ -33,7 +33,7 @@ This is a general purpose AWS Cognito User Management dashboard.
         https://localhost:5001/signin-oidc is the url Hosted UI redirects to after sign in.
 
 
-3. Configure appsettings.json.  
+3. To run locally from a machine configured with AWS Access, configure appsettings.json
 
     ```javascript
         {
@@ -50,7 +50,11 @@ This is a general purpose AWS Cognito User Management dashboard.
     ```
     Please note the "RedirectUri" in appsettings needs to match exactly with one of the "Allowed callback URL's" in AWS Cognito, Hosted UI configuration. If they do not match you will get the dreaded redirect mismatch error.  A common gotcha is the missing/additional trailing slash in the the url.
 
-4. Build & Run
+4. To run using docker compose update the environment variables as per the below sample.
+
+    [Docker Image](https://hub.docker.com/r/roonga/cognito-dashboard)
+    
+    [Sample Docker Compose file](docker-compose.yml)
 
 5. Create a user using AWS Web Console and add to dashboard-administrators group. 
 
