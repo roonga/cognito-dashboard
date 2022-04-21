@@ -1,14 +1,13 @@
-﻿namespace CognitoDashboard.Models
-{
-    public static class StringExtensions
-    {
-        public static string ToTitleCase(this string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return string.Empty;
+﻿namespace CognitoDashboard.Models;
 
-            value = value.Replace('_', ' ');
-            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
-        }
+public static class StringExtensions
+{
+    public static string ToTitleCase(this string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return string.Empty;
+
+        value = value.Replace('_', ' ');
+        return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(value.ToLower());
     }
 }

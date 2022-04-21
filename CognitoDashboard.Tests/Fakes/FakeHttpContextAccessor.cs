@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace CognitoDashboard.Tests.Fakes
-{
-    internal class FakeHttpContextAccessor : IHttpContextAccessor
-    {
-        private HttpContext _httpContext = new DefaultHttpContext();
+namespace CognitoDashboard.Tests.Fakes;
 
-        public HttpContext HttpContext { get => _httpContext; set => _httpContext = value; }
-    }
+internal class FakeHttpContextAccessor : IHttpContextAccessor
+{
+    private HttpContext _httpContext = new DefaultHttpContext();
+
+    public HttpContext HttpContext { get => _httpContext; set => _httpContext = value; }
 }

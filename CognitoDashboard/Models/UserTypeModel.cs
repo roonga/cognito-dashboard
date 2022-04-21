@@ -1,16 +1,15 @@
 using Amazon.CognitoIdentityProvider.Model;
 
-namespace CognitoDashboard.Models
+namespace CognitoDashboard.Models;
+
+public class UserTypeModel
 {
-    public class UserTypeModel
+    public UserType UserType { get; }
+
+    public bool Selected { get; set; }
+
+    public UserTypeModel(UserType userType)
     {
-        public UserType UserType { get; }
-
-        public bool Selected { get; set; }
-
-        public UserTypeModel(UserType userType)
-        {
-            UserType = userType;
-        }
+        UserType = userType;
     }
 }

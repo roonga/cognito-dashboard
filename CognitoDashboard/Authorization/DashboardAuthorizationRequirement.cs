@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace CognitoDashboard.Authorization
-{
-    class DashboardAuthorizationRequirement : IAuthorizationRequirement
-    {
-        public string CognitoGroup { get; private set; }
+namespace CognitoDashboard.Authorization;
 
-        public DashboardAuthorizationRequirement(string cognitoGroup)
-        {
-            CognitoGroup = cognitoGroup;
-        }
+class DashboardAuthorizationRequirement : IAuthorizationRequirement
+{
+    public string CognitoGroup { get; private set; }
+
+    public DashboardAuthorizationRequirement(string cognitoGroup)
+    {
+        CognitoGroup = cognitoGroup;
     }
 }

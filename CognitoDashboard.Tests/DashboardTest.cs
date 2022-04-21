@@ -1,22 +1,21 @@
-using Xunit;
 using Bunit;
 using CognitoDashboard.Pages;
+using Xunit;
 
-namespace CognitoDashboard.Tests
+namespace CognitoDashboard.Tests;
+
+public class DashboardTest
 {
-  public class DashboardTest
-  {
     [Fact]
     public void DashboardComponentRendersCorrectly()
     {
-      // Arrange
-      using var ctx = new TestContext();
+        // Arrange
+        using var ctx = new TestContext();
 
-      // Act
-      var cut = ctx.RenderComponent<Dashboard>();
+        // Act
+        var cut = ctx.RenderComponent<Dashboard>();
 
-      // Assert
-      cut.MarkupMatches(@"<nav><ol class=""breadcrumb border border-0""><li class=""breadcrumb-item active"">Dashboard</li></ol></nav>");
+        // Assert
+        cut.MarkupMatches(@"<nav><ol class=""breadcrumb border border-0""><li class=""breadcrumb-item active"">Dashboard</li></ol></nav>");
     }
-  }
 }

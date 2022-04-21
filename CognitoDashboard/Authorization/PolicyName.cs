@@ -1,7 +1,6 @@
-﻿namespace CognitoDashboard.Authorization
+﻿namespace CognitoDashboard.Authorization;
+
+static class PolicyName
 {
-    static class PolicyName
-    {
-        internal const string DashboardAdministrators = "DashboardAdministratorsPolicy";
-    }
+    internal const string DashboardAdministrators = "DashboardAdministratorsPolicy";
 }

@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
 
-namespace CognitoDashboard.Models
+namespace CognitoDashboard.Models;
+
+public abstract class ModelBase
 {
-    public abstract class ModelBase
-    {
-        public override string ToString() => JsonSerializer.Serialize(this);
-    }
+    public override string ToString() => JsonSerializer.Serialize(this);
 }

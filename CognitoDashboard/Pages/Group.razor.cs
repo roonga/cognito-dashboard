@@ -1,127 +1,126 @@
-﻿using System.Net;
-using Amazon.CognitoIdentityProvider.Model;
+﻿using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Runtime;
 using CognitoDashboard.IdentityManager;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 
-namespace CognitoDashboard.Pages
+namespace CognitoDashboard.Pages;
+
+public partial class Group : ComponentBase
 {
-    public partial class Group : ComponentBase
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    private IdentityProviderBuilder IdentityProvider { get; set; }
+
+    [Inject]
+    private CognitoConfig CognitoConfig { get; set; }
+
+    [ParameterAttribute]
+    public string GroupName { get; set; }
+
+    private UpdateGroupRequest _updateRequest;
+    private UpdateGroupResponse _updateResponse;
+
+    private bool _isEditMode = false;
+    private bool _isDeleteMode = false;
+
+    private bool IsReadOnly => !_isEditMode;
+
+    private List<string> _errorMessages = new();
+    private List<string> _successMessages = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
+        await GetGroup();
+    }
 
-        [Inject]
-        private IdentityProviderBuilder IdentityProvider { get; set; }
+    private void Edit() => _isEditMode = true;
+    private void Delete() => _isDeleteMode = true;
 
-        [Inject]
-        private CognitoConfig CognitoConfig { get; set; }
+    private void Cancel()
+    {
+        _isEditMode = false;
+        _isDeleteMode = false;
+    }
 
-        [ParameterAttribute]
-        public string GroupName { get; set; }
+    private async Task GetGroup()
+    {
+        _errorMessages = new();
 
-        private UpdateGroupRequest _updateRequest;
-        private UpdateGroupResponse _updateResponse;
-
-        private bool _isEditMode = false;
-        private bool _isDeleteMode = false;
-
-        private bool IsReadOnly => !_isEditMode;
-
-        private List<string> _errorMessages = new();
-        private List<string> _successMessages = new();
-
-        protected override async Task OnInitializedAsync()
+        try
         {
-            await GetGroup();
-        }
-
-        private void Edit() => _isEditMode = true;
-        private void Delete() => _isDeleteMode = true;
-
-        private void Cancel()
-        {
-            _isEditMode = false;
-            _isDeleteMode = false;
-        }
-
-        private async Task GetGroup()
-        {
-            _errorMessages = new();
-
-            try
+            var getRequest = new GetGroupRequest
             {
-                var getRequest = new GetGroupRequest
-                {
-                    UserPoolId = CognitoConfig.UserPoolId,
-                    GroupName = GroupName
-                };
+                UserPoolId = CognitoConfig.UserPoolId,
+                GroupName = GroupName
+            };
 
-                var getResponse = await IdentityProvider.Proxy.GetGroupAsync(getRequest, CancellationToken.None);
+            var getResponse = await IdentityProvider.Proxy.GetGroupAsync(getRequest, CancellationToken.None);
 
-                _updateRequest = new UpdateGroupRequest
-                {
-                    UserPoolId = CognitoConfig.UserPoolId,
-                    GroupName = GroupName,
-                    Description = getResponse.Group.Description,
-                    RoleArn = getResponse.Group.RoleArn,
-                    Precedence = getResponse.Group.Precedence
-                };
-            }
-            catch (AmazonServiceException e)
+            _updateRequest = new UpdateGroupRequest
             {
-                _errorMessages.Add(e.Message);
+                UserPoolId = CognitoConfig.UserPoolId,
+                GroupName = GroupName,
+                Description = getResponse.Group.Description,
+                RoleArn = getResponse.Group.RoleArn,
+                Precedence = getResponse.Group.Precedence
+            };
+        }
+        catch (AmazonServiceException e)
+        {
+            _errorMessages.Add(e.Message);
+        }
+    }
+
+    private async Task UpdateGroup()
+    {
+        _errorMessages = new();
+        _successMessages = new();
+
+        try
+        {
+            if (string.IsNullOrWhiteSpace(_updateRequest.RoleArn))
+                _updateRequest.RoleArn = null;
+
+            _updateResponse = await IdentityProvider.Proxy.UpdateGroupAsync(_updateRequest, CancellationToken.None);
+
+            if (_updateResponse.HttpStatusCode == HttpStatusCode.OK)
+            {
+                _isEditMode = false;
+                _successMessages.Add("Saved Successfully");
             }
         }
-
-        private async Task UpdateGroup()
+        catch (AmazonServiceException e)
         {
-            _errorMessages = new();
-            _successMessages = new();
-
-            try
-            {
-                if (string.IsNullOrWhiteSpace(_updateRequest.RoleArn))
-                    _updateRequest.RoleArn = null;
-
-                _updateResponse = await IdentityProvider.Proxy.UpdateGroupAsync(_updateRequest, CancellationToken.None);
-
-                if (_updateResponse.HttpStatusCode == HttpStatusCode.OK)
-                {
-                    _isEditMode = false;
-                    _successMessages.Add("Saved Successfully");
-                }
-            }
-            catch (AmazonServiceException e)
-            {
-                _errorMessages.Add(e.Message);
-            }
+            _errorMessages.Add(e.Message);
         }
+    }
 
-        private void ClearSuccessMessages() => _successMessages = new();
+    private void ClearSuccessMessages() => _successMessages = new();
 
-        private void ClearErrorMessages() => _errorMessages = new();
+    private void ClearErrorMessages() => _errorMessages = new();
 
-        private async Task ConfirmDeleteGroup()
+    private async Task ConfirmDeleteGroup()
+    {
+        _errorMessages = new();
+        _successMessages = new();
+
+        try
         {
-            _errorMessages = new();
-            _successMessages = new();
-
-            try
+            var deleteRequest = new DeleteGroupRequest
             {
-                var deleteRequest = new DeleteGroupRequest
-                {
-                    UserPoolId = CognitoConfig.UserPoolId,
-                    GroupName = GroupName
-                };
+                UserPoolId = CognitoConfig.UserPoolId,
+                GroupName = GroupName
+            };
 
-                var deleteResponse = await IdentityProvider.Proxy.DeleteGroupAsync(deleteRequest, CancellationToken.None);
-                NavigationManager.NavigateTo("/groups");
-            }
-            catch (AmazonServiceException e)
-            {
-                _errorMessages.Add(e.Message);
-            }
+            var deleteResponse = await IdentityProvider.Proxy.DeleteGroupAsync(deleteRequest, CancellationToken.None);
+            NavigationManager.NavigateTo("/groups");
+        }
+        catch (AmazonServiceException e)
+        {
+            _errorMessages.Add(e.Message);
         }
     }
 }

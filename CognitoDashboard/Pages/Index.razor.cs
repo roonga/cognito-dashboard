@@ -1,24 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CognitoDashboard.Pages
+namespace CognitoDashboard.Pages;
+
+public partial class Index : ComponentBase
 {
-    public partial class Index : ComponentBase
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        [CascadingParameter]
-        private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        var authenticationState = await AuthenticationStateTask;
 
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
-
-        protected async override Task OnInitializedAsync()
+        if (authenticationState.User.Identity.IsAuthenticated)
         {
-            var authenticationState = await AuthenticationStateTask;
-
-            if (authenticationState.User.Identity.IsAuthenticated)
-            {
-                NavigationManager.NavigateTo("/dashboard");
-            }
+            NavigationManager.NavigateTo("/dashboard");
         }
     }
 }

@@ -2,13 +2,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace CognitoDashboard
+namespace CognitoDashboard.Pages;
+
+public class LoginModel : PageModel
 {
-    public class LoginModel : PageModel
+    public async Task OnGet(string redirectUri)
     {
-        public async Task OnGet(string redirectUri)
-        {
-            await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = redirectUri });
-        }
+        await HttpContext.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties { RedirectUri = redirectUri });
     }
 }
