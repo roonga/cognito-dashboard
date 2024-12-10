@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/CognitoDashboard/bin/Debug/net6.0/CognitoDashboard.dll",
+            "program": "${workspaceFolder}/CognitoDashboard/bin/Debug/net9.0/CognitoDashboard.dll",
             "args": [],
             "cwd": "${workspaceFolder}/CognitoDashboard",
             "stopAtEntry": false,
