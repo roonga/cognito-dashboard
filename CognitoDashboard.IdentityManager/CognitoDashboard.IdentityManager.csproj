@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.2.12" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.7.405" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
